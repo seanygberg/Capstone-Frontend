@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const SignUp = () => {
             const response = await fetch('/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, email, password }),
             });
 
             if (!response.ok) {
@@ -37,6 +38,14 @@ const SignUp = () => {
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
+            />
+
+            <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
             />
 
