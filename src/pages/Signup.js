@@ -26,7 +26,7 @@ const SignUp = () => {
             // Redirect them to the login page
             navigate('/login');
         } catch (error) {
-            setError('Error signing up. Please try again later.');
+            setError('Error signing up. Please try again later.' + error);
         }
     }
 

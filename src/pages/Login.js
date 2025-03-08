@@ -26,7 +26,7 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         navigate('/'); // Redirect to Home page
       } catch (err) {
-        setError('Error logging in. Please try again later.');
+        setError('Error logging in: ' + err);
       }
     };
   return (
