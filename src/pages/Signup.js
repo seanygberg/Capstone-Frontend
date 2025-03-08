@@ -10,33 +10,29 @@ const SignUp = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         try {
-            const response = await fetch('/auth/signup', {
+            // Sign up the user
+            const response = await fetch('/signup', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify({ username, email, password }),
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new Error(data.error || 'Failed to sign up');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error signing up.');
             }
 
-            // Save token in localStorage
-            localStorage.setItem('token', data.token);
-
-            // Redirect to home page
-            navigate('/');
-        } catch (err) {
-            setError(err.message);
+            // Redirect them to the login page
+            navigate('/login');
+        } catch (error) {
+            setError('Error signing up. Please try again later.');
         }
-    };
+    }
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1>Sign Up</h1>
+            <h1> Sign Up</h1>
             <input
                 type="text"
                 placeholder="Username"
@@ -44,13 +40,15 @@ const SignUp = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 required
             />
+
             <input
-                type="email"
+                type="text"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
+
             <input
                 type="password"
                 placeholder="Password"
@@ -58,10 +56,11 @@ const SignUp = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
+
             <button type="submit">Sign Up</button>
             {error && <p>{error}</p>}
         </form>
     );
-};
+}
 
 export default SignUp;

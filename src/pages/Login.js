@@ -2,58 +2,54 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        try {
-            const response = await fetch('/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to log in');
-            }
-
-            // Save token in localStorage
-            localStorage.setItem('token', data.token);
-
-            // Redirect to home page
-            navigate('/');
-        } catch (err) {
-            setError(err.message);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+        });
+  
+        const data = await response.json();
+  
+        if (!response.ok) {
+          setError(data.error || 'Failed to log in');
+          return;
         }
+  
+        // Store the token
+        localStorage.setItem('token', data.token);
+        navigate('/'); // Redirect to Home page
+      } catch (err) {
+        setError('Error logging in. Please try again later.');
+      }
     };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <h1>Login</h1>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit">Login</button>
-            {error && <p>{error}</p>}
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+        />
+        <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+        />
+        <button type="submit">Login</button>
+        {error && <p>{error}</p>}
+    </form>
+    )
 };
 
 export default Login;
