@@ -22,13 +22,19 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
 
           {/* Protect these routes */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/favorites" element={<Favorites />} />
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/performances" element={<Performances />} />
-          </Route>
+          <Route path="/favorites" element={
+            <PrivateRoute>
+              <Favorites />
+            </PrivateRoute>
+          } />
+          
+          <Route path="/performances" element={
+            <PrivateRoute>
+              <Performances />
+            </PrivateRoute>
+          } />
         </Routes>
+
       </BrowserRouter>
     </div>
   );

@@ -12,7 +12,7 @@ const SignUp = () => {
         event.preventDefault();
         try {
             // Sign up the user
-            const response = await fetch('/signup', {
+            const response = await fetch('http://localhost:5000/auth/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify({ username, email, password }),
